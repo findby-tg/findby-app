@@ -1,0 +1,8 @@
+{
+  "name": "FindBy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "b3332d7c"
+}

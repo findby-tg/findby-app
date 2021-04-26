@@ -5,7 +5,16 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'modal-pesquisa',
+    loadChildren: () => import('./modal-pesquisa/modal-pesquisa.module').then( m => m.ModalPesquisaPageModule)
+  },
+  {
+    path: 'vitrine',
+    loadChildren: () => import('./vitrine/vitrine.module').then( m => m.VitrinePageModule)
   }
+
 ];
 @NgModule({
   imports: [

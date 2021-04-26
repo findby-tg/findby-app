@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },
       {
+        path: 'vitrine/:id/:nome',
+        loadChildren: () => import('../vitrine/vitrine.module').then(m => m.VitrinePageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/buscar',
         pathMatch: 'full'

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{nome}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let produto of produtos">
+    <ion-card-header>
+      <ion-card-title>{{produto.descricao}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Alguma descrição bem daora!
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -20,7 +20,7 @@ const routes: Routes = [
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },
       {
-        path: 'vitrine/:id/:nome',
+        path: 'vitrine/:id',
         loadChildren: () => import('../vitrine/vitrine.module').then(m => m.VitrinePageModule)
       },
       {

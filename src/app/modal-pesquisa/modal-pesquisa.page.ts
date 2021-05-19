@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { VendedoresService } from '../services/vendedores.service'
 
 import _ from 'loadsh';
+import { Vendedor } from '../interface/vendedor';
 
 @Component({
   selector: 'app-modal-pesquisa',
@@ -12,23 +14,13 @@ import _ from 'loadsh';
 export class ModalPesquisaPage implements OnInit {
 
   textoPesq: string;
-  vendedores: Array<{id:number, nome: string}>;
-  allVendors: any;
+  vendedores: Vendedor[];
 
-  constructor(private modalCtrl: ModalController, private router: Router) {
+  constructor(private modalCtrl: ModalController, 
+              private router: Router,
+              private vendService: VendedoresService) {
     this.textoPesq = '';
-    this.vendedores = [
-      { id: 1, nome: "Mercearia Warus"},
-      { id: 2, nome: "Casa de Construção Irmão a Obra"},
-      { id: 3, nome: "Padaria Pãodemais"},
-      { id: 4, nome: "Açougue Filémio"},
-      { id: 5, nome: "Bar Trópico Maisnocais"},
-      { id: 6, nome: "Restaurante Florinda Dona"},
-      { id: 7, nome: "Farmácia Guarda-chuva"},
-      { id: 8, nome: "Papelaria Foldpaper"}
-    ];
-
-    this.allVendors = this.vendedores;
+    this.vendedores = this.vendService.vendedores;
   }
  
   dismissModal() {
@@ -39,19 +31,18 @@ export class ModalPesquisaPage implements OnInit {
     let texto = vend.target.value;
     
     if(texto) {
-      this.vendedores = _.values(this.allVendors);
+      this.vendedores = _.values(this.vendService.vendedores);
       this.vendedores = this.vendedores.filter((vendedor) => {
         return (vendedor.nome.toLowerCase().indexOf(texto.toLowerCase()) > -1);
       })  
     } else {
-      this.vendedores = this.allVendors;
+      this.vendedores = this.vendService.vendedores;
     }
   }
 
   abreVitrine(vend: any) {
-    //console.log(`tabs/vitrine/${vend.id}`)
     this.modalCtrl.dismiss();
-    this.router.navigate(['tabs/vitrine', vend.id, vend.nome])
+    this.router.navigate(['tabs/vitrine', vend.id])
   }
 
   ngOnInit() {

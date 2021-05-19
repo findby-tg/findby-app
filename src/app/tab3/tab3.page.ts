@@ -7,6 +7,11 @@ import { Component } from '@angular/core';
 })
 export class Tab3Page {
 
-  constructor() {}
+  isUsaLoc:boolean=false;
+  distancia:number;
+  image:string = 'https://greenvolt.com.br/wp-content/uploads/2018/05/ef3-placeholder-image.jpg';
 
+  constructor() {
+
+  }
 }

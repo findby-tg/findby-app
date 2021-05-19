@@ -1,4 +1,8 @@
 export interface Produto {
-    id:number;
-    descricao:string;
+    id:number,
+    produtos:Array<{
+        id:number,
+        descricao:string,
+        favorito: boolean
+    }>
 }

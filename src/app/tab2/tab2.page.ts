@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { Vendedor } from '../interface/vendedor';
 import { ModalPesquisaPage } from '../modal-pesquisa/modal-pesquisa.page';
+import { VendedoresService } from '../services/vendedores.service';
 
 declare var H;
 @Component({
@@ -12,8 +15,11 @@ export class Tab2Page {
   map:any;
   platform:any;
   hereMapApiKey:string="MDEyV46RCZ67_RQAfkyHDaAuDdEaeE5YSwS3pQmKHXc";
+  vendedores: Vendedor[];
   
-  constructor(public modalController: ModalController) {}
+  constructor(public modalController: ModalController,
+              private vendService: VendedoresService,
+              private router: Router) {}
 
   async modalPesquisa() {
     const modal = await this.modalController.create(
@@ -25,12 +31,32 @@ export class Tab2Page {
     await modal.present();
   }
 
+  testeFunct() {
+    alert("deu certo!!!!")
+  }
+
   ngOnInit() {
     var that = this;
     setTimeout(() =>{
 
+      this.vendedores = this.vendService.vendedores;
+
+      function clearBubbles(bubbles) {
+        for(let bubble of bubbles){
+          ui.removeBubble(bubble)
+        }
+      }
+
       function addMarkerToGroup(group, coordinate, html) {
         var marker = new H.map.Marker(coordinate);
+        /*marker.addEventListener('tap', function(evt) {
+          setTimeout(() => {
+            console.log("Adicionou Listener: ", evt.target.data, document.getElementById("banana"))
+              document.getElementById("banana").addEventListener('click', function(evt) {
+              that.router.navigate(['tabs/vitrine', 1, "Mercearia Warus"])
+            })
+          }, 2000)
+        })*/
         marker.setData(html);
         group.addObject(marker);
       }
@@ -45,17 +71,26 @@ export class Tab2Page {
           var bubble =  new H.ui.InfoBubble(evt.target.getGeometry(), {
             content: evt.target.getData()
           });
+          clearBubbles(ui.getBubbles())
           ui.addBubble(bubble);
+
+          document.getElementById("vendedorBtn").addEventListener('click', () => {
+            var id = (<HTMLInputElement>document.getElementById("idVend"))
+            that.router.navigate(['tabs/vitrine', id.value])
+          })
+
         }, false);
-      
-        addMarkerToGroup(group, { lat: -23.4817086, lng: -47.4640104 },
-          '<div><a href="https://www.facebook.com/maycondawn" target="_blank">Maycon\'s House</a>' +
-          '</div><div>Here\'s Johnny<br>Capacity: Over 9 thousand!</div>');
-      
-        addMarkerToGroup(group, { lat: -23.483481, lng: -47.460483 },
-          '<div><a href="https://www.facebook.com/rafael.maluffe.vieira" target="_blank">Rafael\'s House</a>' +
-          '</div><div>Salad house what\'s the cucumber!<br>Capacity: More than 3 FUS-RO-DAH</div>');
-      
+        
+        that.vendedores.forEach((vend) => {
+          addMarkerToGroup(group,
+                           { lat: vend.coord.lat, lng: vend.coord.lng },
+                           `<div>
+                            <input type="hidden" id="idVend" value="${vend.id}">
+                            <ion-button class="ion-text-wrap" style="height: 70px" expand="block" color="dark" id="vendedorBtn">${vend.nome}</ion-button>
+                           </div>
+                           <div>{Segmento Aqui}</div>`
+                           )
+        })      
       }
       that.platform = new H.service.Platform({
         'apikey': that.hereMapApiKey

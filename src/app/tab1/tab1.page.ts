@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { Categoria } from '../interface/categoria';
 import { Favorito } from '../interface/favoritos';
+import { Produto } from '../interface/produto';
 import { Segmento } from '../interface/segmento';
 import { Vendedor } from '../interface/vendedor';
 import { CategoriasService } from '../services/categorias.service';
@@ -18,10 +19,11 @@ import { VendedoresService } from '../services/vendedores.service';
 export class Tab1Page {
 
   itensFav:Array<{codItem:number, itemDesc:string, nome:string}> = [];
-  favorito: Favorito
+  favoritos: Favorito[];
   segmentos: Segmento[];
   categorias: Categoria[];
   vendedores: Vendedor[];
+  produtos: Produto[];
   image:string = 'https://greenvolt.com.br/wp-content/uploads/2018/05/ef3-placeholder-image.jpg';
   load: any;
 
@@ -35,19 +37,19 @@ export class Tab1Page {
   }
 
   exibeDados() {
-    this.favorito.favoritos.forEach(b => 
+    this.favoritos.forEach(b => 
       this.itensFav.push(
       {
         codItem: b.codItem,
-        itemDesc: b.indTipoItem == "P" ? "Produto" : b.indTipoItem == "C" ? "Categoria" : b.indTipoItem == "S" ? "Segmento" : "Vendedor",
-        nome: ""/*b.indTipoItem == "P" ?  -- Falta criar lista só de itens
-                  prodServ.produtos.find(p => p.id == b.codItem) : 
-                b.indTipoItem == "C" ?
+        itemDesc: b.indTipoFav == "P" ? "Produto" : b.indTipoFav == "C" ? "Categoria" : b.indTipoFav == "S" ? "Segmento" : "Vendedor",
+        nome: b.indTipoFav == "P" ?
+                  this.produtos.find(p => p.codProduto == b.codItem).nomeProduto : 
+                b.indTipoFav == "C" ?
                   this.categorias.find(c => c.codCategoria == b.codItem).nomeCategoria :
-                  b.indTipoItem == "S" ?
+                  b.indTipoFav == "S" ?
                   this.segmentos.find(s => s.codSegmento == b.codItem).nomeSegmento :
-                    b.indTipoItem == "V" ?
-                      this.vendedores.find(v => v.id == b.codItem).nome : ""*/
+                    /*b.indTipoFav == "V" ?
+                      this.vendedores.find(v => v.id == b.codItem).nome : */""
       })
     )
     
@@ -58,15 +60,22 @@ export class Tab1Page {
               private catServ: CategoriasService,
               private segServ: SegmentosService,
               private vendServ: VendedoresService,
+              private favServ: FavoritosService,
               private loading: LoadingController) {
 
     this.presentLoad()
-    this.favorito = fav.favoritos.find(a => a.codUsuario == 9)
     Promise.all([
-      this.segServ.getSegmentos().toPromise()
-    ]).then((segs) => {
+      this.segServ.getSegmentos().toPromise(),
+      this.catServ.getCategorias().toPromise(),
+      this.prodServ.getProdutos().toPromise(),
+      this.favServ.getFavoritosUsuario(9).toPromise()
+    ]).then((data) => {
       this.load.dismiss()
-      console.log(segs.)
+      this.segmentos = data[0]
+      this.categorias = data[1]
+      this.produtos = data[2]
+      this.favoritos = data[3]
+      this.exibeDados()
     })
     
   }

@@ -11,27 +11,7 @@ export class SegmentosService {
 
   host:string = "http://findby-web-rest.herokuapp.com";
 
-  constructor(private httpClient: HttpClient) {
-    
-   /* [
-      {
-        codSegmento: 1,
-        nomeSegmento: "Teste Segmento 1",
-      },
-      {
-        codSegmento: 2,
-        nomeSegmento: "Teste Segmento 2"
-      },
-      {
-        codSegmento: 3,
-        nomeSegmento: "Teste Segmento 3"
-      },
-      {
-        codSegmento: 4,
-        nomeSegmento: "Teste Segmento 4"
-      }
-    ]*/
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getSegmentos() {
     return this.httpClient.get<Segmento[]>(this.host + "/segmentos");

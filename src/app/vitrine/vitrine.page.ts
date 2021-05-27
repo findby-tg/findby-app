@@ -15,7 +15,7 @@ export class VitrinePage implements OnInit {
   
   id: number;
   nome:string;
-  produtos:Produto ={id: 0,produtos: []} ;
+  produtos:Produto[];
   prodVendedor:Produto[] = [];
   load: any;
   isFavorito:boolean = true;
@@ -33,7 +33,7 @@ export class VitrinePage implements OnInit {
   exibirProdutoDetalhado(id) {
     let navigationExtra: NavigationExtras = {
       queryParams: {
-        produto: JSON.stringify(this.produtos.produtos.find(a => a.id == id))
+        produto: JSON.stringify(this.produtos.find(a => a.codProduto == id))
       }
     } 
     this.router.navigate(['tabs/produto'], navigationExtra)
@@ -50,21 +50,22 @@ export class VitrinePage implements OnInit {
   constructor(private route: ActivatedRoute, private loading: LoadingController, private prodService: ProdutosService, private vendService: VendedoresService, private router: Router) { 
 
     this.presentLoad();
-    this.prodVendedor = this.prodService.produtos;
+    //this.prodVendedor = this.prodService.produtos;
     
     this.route.params.subscribe(params => {
       this.id = params['id'];
-    })
 
-    
-    setTimeout(() =>{
+      console.log(this.id)
       this.nome = this.vendService.vendedores.find(a => a.id == this.id).nome;
-      this.produtos = this.prodVendedor.find(a => a.id == this.id);
-      this.load.dismiss();
-    }, 1000)
-    
+
+      Promise.all([
+        this.prodService.getProdutosVend(this.id).toPromise()
+      ]).then((data) => {
+        this.produtos = data[0]
+        this.load.dismiss();
+      })
+    })
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

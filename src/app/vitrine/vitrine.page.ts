@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { Produto } from '../interface/produto';
 import { ProdutosService } from '../services/produtos.service';
@@ -30,7 +30,24 @@ export class VitrinePage implements OnInit {
     await this.load.present();
   }
 
-  constructor(private route: ActivatedRoute, private loading: LoadingController, private prodService: ProdutosService, private vendService: VendedoresService) { 
+  exibirProdutoDetalhado(id) {
+    let navigationExtra: NavigationExtras = {
+      queryParams: {
+        produto: JSON.stringify(this.produtos.produtos.find(a => a.id == id))
+      }
+    } 
+    this.router.navigate(['tabs/produto'], navigationExtra)
+  }
+  exibirLojistaDetalhado() {
+    let navigationExtra: NavigationExtras = {
+      queryParams: {
+        vendedor: JSON.stringify(this.vendService.vendedores.find(a => a.id == this.id))
+      }
+    } 
+    this.router.navigate(['tabs/lojista'], navigationExtra)
+  }
+
+  constructor(private route: ActivatedRoute, private loading: LoadingController, private prodService: ProdutosService, private vendService: VendedoresService, private router: Router) { 
 
     this.presentLoad();
     this.prodVendedor = this.prodService.produtos;

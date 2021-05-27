@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
@@ -13,7 +13,20 @@ const routes: Routes = [
   {
     path: 'vitrine',
     loadChildren: () => import('./vitrine/vitrine.module').then( m => m.VitrinePageModule)
+  },
+  {
+    path: '',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'produto-detalhado',
+    loadChildren: () => import('./produto-detalhado/produto-detalhado.module').then( m => m.ProdutoDetalhadoPageModule)
+  },
+  {
+    path: 'lojista-detalhado',
+    loadChildren: () => import('./lojista-detalhado/lojista-detalhado.module').then( m => m.LojistaDetalhadoPageModule)
   }
+
+
 
 ];
 @NgModule({

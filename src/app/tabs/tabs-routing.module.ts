@@ -4,7 +4,7 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
@@ -22,6 +22,14 @@ const routes: Routes = [
       {
         path: 'vitrine/:id',
         loadChildren: () => import('../vitrine/vitrine.module').then(m => m.VitrinePageModule)
+      },
+      {
+        path: 'produto',
+        loadChildren: () => import('../produto-detalhado/produto-detalhado.module').then(m => m.ProdutoDetalhadoPageModule)
+      },
+      {
+        path: 'lojista',
+        loadChildren: () => import('../lojista-detalhado/lojista-detalhado.module').then(m => m.LojistaDetalhadoPageModule)
       },
       {
         path: '',

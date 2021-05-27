@@ -31,10 +31,6 @@ export class Tab2Page {
     await modal.present();
   }
 
-  testeFunct() {
-    alert("deu certo!!!!")
-  }
-
   ngOnInit() {
     var that = this;
     setTimeout(() =>{
@@ -86,7 +82,7 @@ export class Tab2Page {
                            { lat: vend.coord.lat, lng: vend.coord.lng },
                            `<div>
                             <input type="hidden" id="idVend" value="${vend.id}">
-                            <ion-button class="ion-text-wrap" style="height: 70px" expand="block" color="dark" id="vendedorBtn">${vend.nome}</ion-button>
+                            <ion-button class="ion-text-wrap" style="height: 70px" expand="block" color="tertiary" id="vendedorBtn">${vend.nome}</ion-button>
                            </div>
                            <div>{Segmento Aqui}</div>`
                            )

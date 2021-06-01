@@ -1,3 +1,5 @@
+import { HttpClient } from '@angular/common/http';
+import { stringify } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import { Usuario } from '../interface/usuario';
 import { ContatosService } from './contatos.service';
@@ -9,10 +11,12 @@ import { EnderecoService } from './endereco.service';
 export class UsuariosService {
 
   users:Usuario[];
+  host:string = "http://findby-web-rest.herokuapp.com";
 
   constructor(private contServ: ContatosService,
-              private enderServ: EnderecoService) {
-    this.users = [
+              private enderServ: EnderecoService,
+              private httpClient: HttpClient) {
+    /*this.users = [
       {
         codUsuario: 1,
         nome: "Mercearia Warus",
@@ -25,9 +29,18 @@ export class UsuariosService {
         raio: 10,
         tipoPessoa: "J",
         tipoUsuario: "V",
-        enderecos: enderServ.enderecos.find(ed => ed.codUsuario == 1),
-        contatos: contServ.contatos.find(ct => ct.codUsuario == 1)
+        enderecos: {"codEndereco":1,"codUsuario":1,"logradouro":"R. Domingos Rafael Pinoti","numero":98,"bairro":"Vila Netinho","cep":18080590,"cidade":"Sorocaba","uf":"SP","pais":76,"latitude":-23.4817086,"longitude":-47.4640104,"raio":null},
+        contatos: [{"codContato":1,"numDdd":15,"numContato":32242511,"indTipoContato":"F"},{"codContato":2,"numDdd":15,"numContato":32242512,"indTipoContato":"F"}]
       }
-    ]
+    ]*/
+  }
+
+  validarLogin(user, senha) {
+    var body = {usuario: user, senha: senha}
+    return this.httpClient.post<{valido:boolean, tipoUsuario:string, idUsuario:string}>(this.host + "/usuarios/login", body);
+  }
+
+  getUsuarioById(id) {
+    return this.httpClient.get<Usuario>(this.host + `/usuarios/${id}`);
   }
 }

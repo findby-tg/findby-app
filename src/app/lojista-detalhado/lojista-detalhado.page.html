@@ -8,8 +8,13 @@
           </ion-button>
         </ion-buttons>
       </ion-col>
-      <ion-col size="10">
-        <ion-title class="ion-text-center" style="padding: 0 auto; height: 100%; text-transform: uppercase; font-size: 16px; font-weight: 700;">{{vend.nome}}</ion-title>
+      <ion-col size="9.5" style="padding: 0 auto; ">
+        <ion-title class="ion-text-center" style="height: 100%;text-transform: uppercase; font-size: 3.1vw; font-weight: 700;">{{vend.nome}}</ion-title>
+      </ion-col>
+      <ion-col size="1.5" style="padding:0">
+        <ion-button fill="clear" expand="full" style="padding:0; height: 80%;">
+          <ion-icon color="warning" slot="icon-only" name="star-outline"></ion-icon>
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -24,20 +29,19 @@
         <ion-label style="font-size: 18px; color: #000; font-weight: 600;">Endereço</ion-label>
       </ion-item-divider>
       <div style="margin-left: 10px; margin-top: 10px;">
-        <ion-label>Rua Doutor Arthur Gomes, 90</ion-label>
-        <ion-label>Centro</ion-label>
+        <ion-label>{{endereco.logradouro}}, {{endereco.numero}}</ion-label>
+        <ion-label>{{endereco.bairro}}</ion-label>
         <ion-label>Sorocaba, SP</ion-label>
-        <ion-label>CEP 18035-490</ion-label>
+        <ion-label>CEP {{endereco.cep}}</ion-label>
         <ion-label>CNPJ 29.199.120/0001-41</ion-label>
       </div>
       <ion-item-divider>
         <ion-label style="font-size: 18px; color: #000; font-weight: 600; margin-top: 30px;">Contato</ion-label>
       </ion-item-divider>
       <div style="margin-left: 10px; margin-top: 10px;">
-        <ion-label>(15) 99130-4912</ion-label>
-        <ion-label>(15) 99130-4452</ion-label>
+        <ion-label *ngFor="let cont of contatos">({{cont.numDdd}}) {{cont.numContato}}</ion-label>
       </div>
     </ion-item-group>
   </ion-list>
-  <div id="mapcontainervend" style="margin:0 auto;width:90%;height: 40%;"></div>
+  <div id="mapcontainervend" style="margin: 30px auto;width:90%;height: 40%;"></div>
 </ion-content>

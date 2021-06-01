@@ -48,8 +48,8 @@ export class Tab1Page {
                   this.categorias.find(c => c.codCategoria == b.codItem).nomeCategoria :
                   b.indTipoFav == "S" ?
                   this.segmentos.find(s => s.codSegmento == b.codItem).nomeSegmento :
-                    /*b.indTipoFav == "V" ?
-                      this.vendedores.find(v => v.id == b.codItem).nome : */""
+                    b.indTipoFav == "V" ?
+                      this.vendedores.find(v => v.codUsuario == b.codItem).nome : ""
       })
     )
     
@@ -68,14 +68,16 @@ export class Tab1Page {
       this.segServ.getSegmentos().toPromise(),
       this.catServ.getCategorias().toPromise(),
       this.prodServ.getProdutos().toPromise(),
-      this.favServ.getFavoritosUsuario(9).toPromise()
+      this.favServ.getFavoritosUsuario(9).toPromise(),
+      this.vendServ.getLojistas().toPromise()
     ]).then((data) => {
-      this.load.dismiss()
       this.segmentos = data[0]
       this.categorias = data[1]
       this.produtos = data[2]
       this.favoritos = data[3]
+      this.vendedores = data[4]
       this.exibeDados()
+      this.load.dismiss()
     })
     
   }

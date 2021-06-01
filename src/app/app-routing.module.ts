@@ -24,6 +24,10 @@ const routes: Routes = [
   {
     path: 'lojista-detalhado',
     loadChildren: () => import('./lojista-detalhado/lojista-detalhado.module').then( m => m.LojistaDetalhadoPageModule)
+  },
+  {
+    path: 'notificacao',
+    loadChildren: () => import('./notificacao/notificacao.module').then( m => m.NotificacaoPageModule)
   }
 
 

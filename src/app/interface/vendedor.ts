@@ -1,5 +1,8 @@
-export interface Vendedor {
-    id:number;
-    nome:string;
-    coord: { lat:number, lng:number }
+import { Produto } from "./produto";
+import { Segmento } from "./segmento";
+import { Usuario } from "./usuario";
+
+export interface Vendedor extends Usuario {
+    segmento: Segmento;
+    produtos: Produto[];
 }

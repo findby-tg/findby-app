@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
+import { Categoria } from '../interface/categoria';
 import { Produto } from '../interface/produto';
+import { Usuario } from '../interface/usuario';
+import { CategoriasService } from '../services/categorias.service';
 import { ProdutosService } from '../services/produtos.service';
+import { UsuariosService } from '../services/usuarios.service';
 import { VendedoresService } from '../services/vendedores.service'
 
 @Component({
@@ -16,6 +20,10 @@ export class VitrinePage implements OnInit {
   id: number;
   nome:string;
   produtos:Produto[];
+  categorias:Categoria[];
+  prodCategorizado:{} = {};
+  prodArr:Object[] = []
+  vendedor:Usuario = {codUsuario:null,cpfCgc:null,email:null,indUsaLatLong:null,login:null,nome:null,numDddCelular:null,raio:null,senha:null,telefoneCelular:null,tipoPessoa:null,tipoUsuario:null,contatos:[],enderecos:[]};
   prodVendedor:Produto[] = [];
   load: any;
   isFavorito:boolean = true;
@@ -30,6 +38,10 @@ export class VitrinePage implements OnInit {
     await this.load.present();
   }
 
+  voltaVitrine() {
+    this.navCtrl.back();
+  }
+
   exibirProdutoDetalhado(id) {
     let navigationExtra: NavigationExtras = {
       queryParams: {
@@ -41,27 +53,48 @@ export class VitrinePage implements OnInit {
   exibirLojistaDetalhado() {
     let navigationExtra: NavigationExtras = {
       queryParams: {
-        vendedor: JSON.stringify(this.vendService.vendedores.find(a => a.id == this.id))
+        vendedor: JSON.stringify(this.vendedor)
       }
     } 
     this.router.navigate(['tabs/lojista'], navigationExtra)
   }
 
-  constructor(private route: ActivatedRoute, private loading: LoadingController, private prodService: ProdutosService, private vendService: VendedoresService, private router: Router) { 
+  constructor(private route: ActivatedRoute, private loading: LoadingController, private prodService: ProdutosService, private vendService: VendedoresService, private router: Router, private navCtrl: NavController, private usrService: UsuariosService, private catService: CategoriasService) { 
 
     this.presentLoad();
-    //this.prodVendedor = this.prodService.produtos;
     
     this.route.params.subscribe(params => {
       this.id = params['id'];
-
-      console.log(this.id)
-      this.nome = this.vendService.vendedores.find(a => a.id == this.id).nome;
-
+      
       Promise.all([
-        this.prodService.getProdutosVend(this.id).toPromise()
+        this.prodService.getProdutosVend(this.id).toPromise(),
+        this.usrService.getUsuarioById(this.id).toPromise(),
+        this.catService.getCategorias().toPromise()
       ]).then((data) => {
         this.produtos = data[0]
+        this.vendedor = data[1]
+        this.categorias = data[2]
+
+        this.prodCategorizado = {};
+
+        this.produtos.forEach((prod) => {
+          if(!this.prodCategorizado.hasOwnProperty(prod.codCategoria)) {
+            this.prodCategorizado[prod.codCategoria] = {nomeCategoria: this.categorias.find(cat => cat.codCategoria == prod.codCategoria ).nomeCategoria, produtos: []};
+          }
+          this.prodCategorizado[prod.codCategoria].produtos.push(
+            {
+              codProduto: prod.codProduto,
+              nomeProduto: prod.nomeProduto,
+              descricao: prod.descricao,
+              preco: prod.preco,
+              marca: prod.marca
+            }
+          )
+        })
+        this.prodArr = [];
+        this.prodArr.push(this.prodCategorizado);
+
+        this.nome = this.vendedor.nome;
         this.load.dismiss();
       })
     })

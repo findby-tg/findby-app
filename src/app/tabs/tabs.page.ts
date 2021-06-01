@@ -7,6 +7,12 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
 
+  notific:number = 2;
+
   constructor() {}
+
+  ionViewWillLoad() {
+    this.notific = 5;
+  }
 
 }

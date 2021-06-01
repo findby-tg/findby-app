@@ -1,32 +1,21 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Favoritos</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title class="ion-text-center" style="padding: 0 auto; height: 100%; text-transform: uppercase; font-size: 14px; font-weight: 700;">Favoritos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-list lines="full">
-    <ion-item *ngFor="let fav of itensFav">
+  <ion-list style="margin-top: 5px;" lines="full">
+    <ion-item style="margin-bottom: 5px" lines="none" *ngFor="let fav of itensFav">
       <ion-avatar slot="start">
         <img src="{{image}}">
       </ion-avatar>
       <ion-label>
-        <h2>{{fav.nome}}</h2>
-        <p style="align-self: flex-end;">{{fav.itemDesc}}</p>
+        <h2 style="margin-bottom: 0;">{{fav.nome}}</h2>
+        <p style="font-size: 11px;">{{fav.itemDesc}}</p>
       </ion-label>
-      <ion-button fill="clear" size="large" color="danger">
-        <ion-icon name="heart"></ion-icon>
+      <ion-button fill="clear" color="warning">
+        <ion-icon style="font-size: 25px;" name="star"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>

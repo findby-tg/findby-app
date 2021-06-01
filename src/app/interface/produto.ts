@@ -4,5 +4,6 @@ export interface Produto {
     nomeProduto:string,
     descricao:string,
     preco:number,
-    marca:string
+    marca:string,
+    codCategoria:number
 }

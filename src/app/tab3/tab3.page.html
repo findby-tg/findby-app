@@ -2,15 +2,15 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-item style="margin: 10% 10px 30px 2%; display: inline-block" lines="none">
-    <ion-input class="fontColor" id="nomeUser" click="selectAll($event)" size="large" value="Nome do Usuário" readonly="{{editaNome}}" style="font-size: 20px; width: fit-content;"></ion-input>
+  <ion-item style="margin: 20% 10px 30px 2%; display: inline-block" lines="none">
+    <ion-input class="fontColor" id="nomeUser" click="selectAll($event)" size="large" value="{{usuarioLogado.nome}}" readonly="{{editaNome}}" style="font-size: 20px; width: fit-content;"></ion-input>
     <ion-icon color="tertiary" *ngIf="editaNome" (click)="trocarNome()" name="create"></ion-icon>
     <ion-icon color="tertiary" *ngIf="!editaNome" (click)="efetivaNome()" name="save"></ion-icon>
   </ion-item>
   <ion-list>
-    <ion-item style="width: 80%; margin: 0 auto">
-      <p style="margin: 0;">Deseja utilizar sua localização?</p>
-      <ion-toggle  [(ngModel)]="isUsaLoc" color="tertiary"></ion-toggle>
+    <ion-item style="width: 90%; margin: 0 auto">
+      <p style="margin: 0; font-size: 14px;">Deseja utilizar sua localização?</p>
+      <ion-toggle [(ngModel)]="isUsaLoc" color="tertiary"></ion-toggle>
     </ion-item>
     <ul color="tertiary" *ngIf="!isUsaLoc" style="margin-top: 5px; margin-bottom: 70px">
       <li>
@@ -23,7 +23,7 @@
           </ion-item>
           <ion-radio-group value="griff">       
             <ion-item class="ion-no-padding">
-              <ion-item class="ion-no-padding" style="padding-right: 0;">
+              <ion-item class="ion-no-padding" style="width: 90%;">
                 <ion-label>Rua Benedito Galdino de Barros</ion-label>
                 <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="biff" mode="ios"></ion-radio>
               </ion-item>
@@ -31,7 +31,7 @@
             </ion-item>
         
             <ion-item class="ion-no-padding">
-              <ion-item class="ion-no-padding">
+              <ion-item class="ion-no-padding" style="width: 90%;">
                 <ion-label>Rua Xavier de Toledo</ion-label>
                 <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="griff" mode="ios"></ion-radio>
               </ion-item>
@@ -39,7 +39,7 @@
             </ion-item>
         
             <ion-item class="ion-no-padding">
-              <ion-item class="ion-no-padding">
+              <ion-item class="ion-no-padding" style="width: 90%;">
                 <ion-label>Rua Alvarenga Peixoto</ion-label>
                 <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="buford" mode="ios"></ion-radio>
               </ion-item>
@@ -74,18 +74,17 @@
     </ion-item>
     <ion-item style="padding: 10px 30px;">
       <ion-label class="fontColor">E-mail: </ion-label>
-      <ion-input id="emailUser" placeholder="teste@email.com.br" readonly="{{editaEmail}}"></ion-input>
+      <ion-input id="emailUser" placeholder="teste@email.com.br" value="{{usuarioLogado.email}}" readonly="{{editaEmail}}"></ion-input>
       <ion-icon color="tertiary" *ngIf="editaEmail" (click)="trocarEmail()" name="create"></ion-icon>
       <ion-icon color="tertiary" *ngIf="!editaEmail" (click)="efetivaEmail()" name="save"></ion-icon>
     </ion-item>
     <ion-item style="padding: 10px 30px;">
       <ion-label class="fontColor">Celular: </ion-label>
-      <ion-input id="celularUser" placeholder="(11) 11111-1111" readonly="{{editaCelular}}"></ion-input>
+      <ion-input id="celularUser" placeholder="(11) 11111-1111" value="{{usuarioLogado.numDddCelular}}{{usuarioLogado.telefoneCelular}}" readonly="{{editaCelular}}"></ion-input>
       <ion-icon color="tertiary" *ngIf="editaCelular" (click)="trocarCelular()" name="create"></ion-icon>
       <ion-icon color="tertiary" *ngIf="!editaCelular" (click)="efetivaCelular()" name="save"></ion-icon>
     </ion-item>
-
-    <ion-button id="logoff" color="medium" expand="block" style="padding: 0 30px; margin-top: 70px;">Resetar Senha</ion-button>
   </ion-list>
+  <ion-button id="reset" color="tertiary" style="padding-right: 5px; padding-top: 15px; position:absolute; left:0;top:0; font-size: 16px;" fill="clear">Resetar Senha</ion-button>
   <ion-button id="logoff" (click)="executeLogoff()" color="danger" style="padding-right: 5px; padding-top: 15px; position:absolute; right:0;top:0; font-size: 16px;" fill="clear">Sair</ion-button>
 </ion-content>

@@ -62,7 +62,7 @@ h1 {
 }
 
 h2 {
-	font-size: 19px;
+	font-size: 16px;
 	line-height: 34px;
 	font-weight: 300;
 	letter-spacing: 1px;
@@ -77,13 +77,13 @@ h2 {
 
 p {
 	color: #555555;
-	font-size: 17px;
-	line-height: 26px;
+	font-size: 16px;
+	line-height: 34px;
 	letter-spacing: 1px;
 	position: relative;
-	overflow: hidden;
+	//overflow: hidden;
 	max-height: 800px;
-	opacity: 1;
+	//opacity: 1;
 	transform: translate(0, 0);
 	margin-top: 14px;
 	z-index: 2;

@@ -4,14 +4,14 @@
       <ion-row>
         <ion-col size="1">
           <ion-buttons>
-            <ion-button (click)="dismissModal()" fill="clear">
+            <ion-button (click)="voltaVitrine()" fill="clear">
               <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-col>
         <ion-col size="10" (click)="exibirLojistaDetalhado()">
-          <ion-title>{{nome}}</ion-title>
-          <ion-title style="color: #b6b4b4; font-size: 14px; padding-top: 5px;">Segmento - 10km</ion-title>
+          <ion-title>{{vendedor.nome}}</ion-title>
+          <ion-title style="color: #b6b4b4; font-size: 14px; padding-top: 5px;">Mercearia - 10km</ion-title>
         </ion-col>
         <ion-col size="1" style="padding:0;" (click)="exibirLojistaDetalhado()">
           <ion-title style="font-size: 25px;color: #7c7a7a; padding:0; height: 100%;">></ion-title>
@@ -23,24 +23,34 @@
 
 <ion-content>
   <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let produto of produtos">
-        <ion-card>
-          <div (click)="exibirProdutoDetalhado(produto.id)">
-            <img style="height: 20%;" src="{{image}}">
-            <ion-card-header style="padding: 0">
-              <ion-item lines="none">
-                <p class="ion-text-wrap">{{produto.nomeProduto}}</p>
-              </ion-item>
-          </ion-card-header>
-          </div>
-          <ion-card-content style="padding: 0">
+    <ion-item-group *ngFor="let cat of prodCategorizado | keyvalue">
+      <ion-row>
+          <ion-item-divider>
+            <ion-label style="font-weight: 600; color:#5f5f5f">{{cat.value.nomeCategoria}}</ion-label>
             <ion-button fill="clear" expand="full">
-              <ion-icon color="danger" slot="icon-only" [name]="produto.favorito? 'heart' : 'heart-outline'"></ion-icon>
+              <ion-icon color="warning" slot="icon-only" name="star-outline"></ion-icon>
             </ion-button>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+          </ion-item-divider>
+     </ion-row>
+      <ion-row>
+        <ion-col size="4" *ngFor="let produto of cat.value.produtos">
+          <ion-card style="height:220px">
+            <div (click)="exibirProdutoDetalhado(produto.codProduto)">
+              <img style="height: 20%;" src="{{image}}">
+              <ion-card-header style="padding: 0; height: 80px;">
+                <ion-item lines="none">
+                  <p class="ion-text-wrap" style="max-height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px; color:#5f5f5f">{{produto.nomeProduto}}</p>
+                </ion-item>
+            </ion-card-header>
+            </div>
+            <ion-card-content style="padding: 0;">
+              <ion-button fill="clear" expand="full" vertical="end">
+                <ion-icon color="warning" slot="icon-only" [name]="produto.favorito? 'star' : 'star-outline'"></ion-icon>
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-item-group>
   </ion-grid>
 </ion-content>

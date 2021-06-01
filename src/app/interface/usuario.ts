@@ -12,22 +12,21 @@ export interface Usuario {
     login:string;
     /** Senha para a aplicação */
     senha:string;
-    /** Nota de Ranking do usuário */
-    nota:number;
     /** CPF ou CNPJ do usuário */
     cpfCgc:number;
+    numDddCelular:number;
+    telefoneCelular:number;
+    indUsaLatLong:string;
     /** Tipo de pessoa do usuário [ F-Física , J-Jurídica ] */
     tipoPessoa:string;
-    /** Inscrição Estadual do usuário */
-    incricaoEstadual:number;
     /** Tipo de usuário [ C-Consumidor , V-Vendedor ] */
     tipoUsuario:string;
     /** Raio configurado para o usuário */
     raio:number;
     /** Contatos do usuário */
-    contatos: Contato;
+    contatos: Contato[];
     /** Endereços do usuário */
-    enderecos: Endereco;
+    enderecos: Endereco[];
 
     /*inserirUsuario(user: Usuario): number;
     obterUsuario(codUser: number): Usuario;

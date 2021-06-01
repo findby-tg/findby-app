@@ -24,9 +24,13 @@
 
 <ion-content>
   <ion-list>
-    <ion-item (click)="abreVitrine(vendedor)" no-lines *ngFor="let vendedor of vendedores">
+    <ion-item style="margin-top: 15px;" lines="none" (click)="abreVitrine(vendedor)" no-lines *ngFor="let vendedor of vendedoresPesq">
+      <ion-avatar slot="start">
+        <img src="{{image}}">
+      </ion-avatar>
       <ion-label>
         <h5>{{vendedor.nome}}</h5>
+        <p>{{vendedor.segmento.nomeSegmento}}</p>
       </ion-label>
     </ion-item>
   </ion-list>

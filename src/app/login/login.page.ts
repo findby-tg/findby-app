@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 import { UsuariosService } from '../services/usuarios.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
   senha:string= ""
 
   constructor(private router: Router,
-              private userService: UsuariosService) {
+              private userService: UsuariosService, private storage: Storage) {
   }
 
   limpaCampos() {
@@ -39,16 +40,23 @@ export class LoginPage implements OnInit {
   }
 
   executeLogin() {
-    var existe = false
-    var usrs = this.userService.users;
-    usrs.forEach(a => {
-      if(a.login == this.usuario && a.senha == this.senha) 
-        existe = true;
+    Promise.all([
+      this.userService.validarLogin(this.usuario, this.senha).toPromise()
+    ]).then((data) => {
+
+      if(data[0].valido) {
+        Promise.all([
+          this.userService.getUsuarioById(data[0].idUsuario).toPromise()
+        ]).then((dados) => {
+          this.storage.clear()
+          console.log(dados[0])
+          this.storage.set("usrLogado", dados[0])
+        })
+        this.router.navigate(['tabs'])
+  
+      } else
+          alert("Usuário/senha não encontrados!")
     })
-    if(existe)
-      this.router.navigate(['tabs'])
-    else
-      alert("Usuário/senha não encontrados!")
   }
 
   ionViewDidEnter() {

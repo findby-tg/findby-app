@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, NavController } from '@ionic/angular';
+import { Contato } from '../interface/contato';
+import { Endereco } from '../interface/endereco';
 import { Vendedor } from '../interface/vendedor';
-import { VendedoresService } from '../services/vendedores.service';
+import { ContatosService } from '../services/contatos.service';
+import { EnderecoService } from '../services/endereco.service';
 
 declare var H;
 @Component({
@@ -13,6 +16,8 @@ declare var H;
 export class LojistaDetalhadoPage implements OnInit {
 
   vend:Vendedor;
+  contatos:Contato[];
+  endereco:Endereco = { codEndereco: null, codUsuario: null, logradouro: "", numero: null, bairro: "", cep: null, cidade: null, uf: null, pais: null, latitude: null, longitude: null, raio: null, indEnderecoSelec: null };
   load: any;
   image:string = "https://greenvolt.com.br/wp-content/uploads/2018/05/ef3-placeholder-image.jpg";
   map:any;
@@ -32,10 +37,20 @@ export class LojistaDetalhadoPage implements OnInit {
     this.navCtrl.back();
   }
 
-  constructor(private route: ActivatedRoute, private loading: LoadingController, private vendService: VendedoresService, private navCtrl: NavController) {
-    this.presentLoad;
+  constructor(private route: ActivatedRoute, private loading: LoadingController, private navCtrl: NavController, private contService: ContatosService, private endService: EnderecoService) {
+    this.presentLoad();
     this.route.queryParams.subscribe(params => {
       this.vend = JSON.parse(params['vendedor'])
+
+      Promise.all([
+        this.contService.getContatosVend(this.vend.codUsuario).toPromise(),
+        this.endService.getEnderecos().toPromise()
+      ]).then((data) => {
+        this.contatos = data[0];
+        this.endereco = data[1].find(e =>  e.codUsuario == this.vend.codUsuario );
+        console.log(this.endereco)
+        this.load.dismiss()
+      })
     })
   }
 
@@ -50,9 +65,8 @@ export class LojistaDetalhadoPage implements OnInit {
         }
       }
 
-      function addMarkerToGroup(group, coordinate, html) {
+      function addMarkerToGroup(group, coordinate) {
         var marker = new H.map.Marker(coordinate);
-        marker.setData(html);
         group.addObject(marker);
       }
 
@@ -62,13 +76,8 @@ export class LojistaDetalhadoPage implements OnInit {
         map.addObject(group);
         
         addMarkerToGroup(group,
-                           { lat: -23.4817086, lng: -47.464015 },
-                           `<div>
-                            <input type="hidden" id="idVend">
-                            <ion-button class="ion-text-wrap" style="height: 70px" expand="block" color="dark" id="vendedorBtn">${this.vend.nome}</ion-button>
-                           </div>
-                           <div>{Segmento Aqui}</div>`
-                           )    
+                           { lat: that.vend.enderecos[0].latitude, lng: that.vend.enderecos[0].longitude }
+                        )    
       }
 
       that.platform = new H.service.Platform({
@@ -80,7 +89,7 @@ export class LojistaDetalhadoPage implements OnInit {
         defaultLayers.vector.normal.map,
         {
           zoom:16,
-          center:{ lat: -23.4817086, lng: -47.464015 }
+          center:{ lat: that.vend.enderecos[0].latitude, lng: that.vend.enderecos[0].longitude }
         }
       );
       window.addEventListener('resize', () => that.map.getViewPort().resize());

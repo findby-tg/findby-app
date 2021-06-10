@@ -14,7 +14,7 @@
         <h2 style="margin-bottom: 0;">{{fav.nome}}</h2>
         <p style="font-size: 11px;">{{fav.itemDesc}}</p>
       </ion-label>
-      <ion-button fill="clear" color="warning">
+      <ion-button (click)="removerFavorito(fav.codItem)" fill="clear" color="warning">
         <ion-icon style="font-size: 25px;" name="star"></ion-icon>
       </ion-button>
     </ion-item>

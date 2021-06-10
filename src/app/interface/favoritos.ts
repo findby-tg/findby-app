@@ -1,5 +1,8 @@
 export interface Favorito {
-    codUsuario:number
-    codItem:number,
-    indTipoFav:string
+    codFavorito:number,
+    codUsuario:number,
+    codCategoria:number,
+    codSegmento:number,
+    codVendedor:number,
+    codProduto:number
 }

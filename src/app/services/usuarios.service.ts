@@ -43,4 +43,8 @@ export class UsuariosService {
   getUsuarioById(id) {
     return this.httpClient.get<Usuario>(this.host + `/usuarios/${id}`);
   }
+
+  cadastraUsuario(usr:Usuario) {
+    return this.httpClient.post(this.host + "/usuarios", usr, {observe: 'response'});
+  }
 }

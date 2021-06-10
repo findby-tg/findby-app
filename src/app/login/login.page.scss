@@ -1,12 +1,13 @@
 ion-icon {
     color: #f5f5f5
 }
+
 .regis {
     position: fixed;
     left: 0;
     right: 0;
     margin: 0 auto;
-    bottom: 30%;
+    bottom: 28%;
     width: 70%;
 };
 ion-button#log {
@@ -37,6 +38,6 @@ span {
         1px 8px 1px #adacac,
         1px 9px 1px #adacac,
         1px 10px 1px #adacac,
-    1px 18px 6px rgba(16,16,16,0.4),
-    1px 22px 10px rgba(16,16,16,0.2)
+    1px 18px 6px #10101066,
+    1px 22px 10px #10101033
 }

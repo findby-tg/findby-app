@@ -11,7 +11,7 @@
         </ion-col>
         <ion-col size="10" (click)="exibirLojistaDetalhado()">
           <ion-title>{{vendedor.nome}}</ion-title>
-          <ion-title style="color: #b6b4b4; font-size: 14px; padding-top: 5px;">Mercearia - 10km</ion-title>
+          <ion-title style="color: #b6b4b4; font-size: 14px; padding-top: 5px;">{{buscarSegmento(vendedor.codSegmento)}} - 10km</ion-title>
         </ion-col>
         <ion-col size="1" style="padding:0;" (click)="exibirLojistaDetalhado()">
           <ion-title style="font-size: 25px;color: #7c7a7a; padding:0; height: 100%;">></ion-title>
@@ -27,8 +27,8 @@
       <ion-row>
           <ion-item-divider>
             <ion-label style="font-weight: 600; color:#5f5f5f">{{cat.value.nomeCategoria}}</ion-label>
-            <ion-button fill="clear" expand="full">
-              <ion-icon color="warning" slot="icon-only" name="star-outline"></ion-icon>
+            <ion-button (click)="favoritarCategoria(cat.key,!cat.value.isFavorito)" fill="clear" expand="full">
+              <ion-icon color="warning" slot="icon-only" [name]="cat.value.isFavorito ? 'star' : 'star-outline'"></ion-icon>
             </ion-button>
           </ion-item-divider>
      </ion-row>

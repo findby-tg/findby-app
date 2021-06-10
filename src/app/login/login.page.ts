@@ -1,6 +1,9 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import { Usuario } from '../interface/usuario';
 import { UsuariosService } from '../services/usuarios.service';
 
 @Component({
@@ -17,7 +20,17 @@ export class LoginPage implements OnInit {
   senha:string= ""
 
   constructor(private router: Router,
-              private userService: UsuariosService, private storage: Storage) {
+              private userService: UsuariosService, 
+              private storage: Storage,
+              private toastController: ToastController) {}
+
+  async presentToast(msg:string, time:number = 2000) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: time,
+      position: "bottom"
+    })
+    toast.present();
   }
 
   limpaCampos() {
@@ -55,15 +68,41 @@ export class LoginPage implements OnInit {
         this.router.navigate(['tabs'])
   
       } else
-          alert("Usuário/senha não encontrados!")
+      this.presentToast("Usuário/senha não encontrados!")
     })
+  }
+
+  executaRegistro() {
+    if(this.email && this.usuario && this.senha) {
+      var bodyUser:Usuario = {
+        codSegmento: 8,
+        nome: this.usuario,
+        email: this.email,
+        login: this.usuario,
+        tipoUsuario: "C",
+        tipoPessoa: "F",
+        raio: 10,
+        senha: this.senha,
+        indUserAtivo: "S"
+      }
+      this.userService.cadastraUsuario(bodyUser).toPromise().then(data => {
+        if(data.status == 201) {
+          this.presentToast("Cadastro concluido com sucesso!")
+          this.retornaLogin()
+          this.habilitaLogin()
+        } else {
+          this.presentToast("Falhou")
+        }
+      })
+    } else {
+      this.presentToast("Preencha todos os campos para concluirmos o cadastro!");
+    }
   }
 
   ionViewDidEnter() {
     this.limpaCampos()
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

@@ -19,6 +19,7 @@ import { VendedoresService } from '../services/vendedores.service';
 export class Tab1Page {
 
   itensFav:Array<{codItem:number, itemDesc:string, nome:string}> = [];
+  favorito: Favorito;
   favoritos: Favorito[];
   segmentos: Segmento[];
   categorias: Categoria[];
@@ -37,22 +38,37 @@ export class Tab1Page {
   }
 
   exibeDados() {
-    this.favoritos.forEach(b => 
-      this.itensFav.push(
-      {
-        codItem: b.codItem,
-        itemDesc: b.indTipoFav == "P" ? "Produto" : b.indTipoFav == "C" ? "Categoria" : b.indTipoFav == "S" ? "Segmento" : "Vendedor",
-        nome: b.indTipoFav == "P" ?
-                  this.produtos.find(p => p.codProduto == b.codItem).nomeProduto : 
-                b.indTipoFav == "C" ?
-                  this.categorias.find(c => c.codCategoria == b.codItem).nomeCategoria :
-                  b.indTipoFav == "S" ?
-                  this.segmentos.find(s => s.codSegmento == b.codItem).nomeSegmento :
-                    b.indTipoFav == "V" ?
-                      this.vendedores.find(v => v.codUsuario == b.codItem).nome : ""
-      })
-    )
-    
+    this.itensFav = []
+    this.favServ.getFavoritosUsuario(9).toPromise().then( fav =>
+      fav.forEach(b => 
+        this.itensFav.push(
+          {
+            codItem: b.codFavorito,
+            itemDesc: b.codProduto ? "Produto" : b.codCategoria ? "Categoria" : b.codSegmento ? "Segmento" : b.codVendedor ? "Vendedor" : "Desconhecido",
+            nome: b.codProduto   ? this.produtos.find(p => p.codProduto == b.codProduto).nomeProduto : 
+                  b.codCategoria ? this.categorias.find(c => c.codCategoria == b.codCategoria).nomeCategoria :
+                  b.codSegmento  ? this.segmentos.find(s => s.codSegmento == b.codSegmento).nomeSegmento :
+                  b.codVendedor  ? this.vendedores.find(v => v.codUsuario == b.codVendedor).nome : 
+                  ""
+        })
+      )
+    ) 
+  }
+
+  removerFavorito(codFav:number) {
+    this.favServ.getFavoritosUsuario(9).toPromise().then( (fav) => {
+      
+      this.favorito = fav.find(a => a.codFavorito == codFav)
+
+      if(this.favorito.codCategoria)
+        this.catServ.favoritarCategoria(this.favorito.codUsuario, this.favorito.codCategoria, false).toPromise().then(a => this.exibeDados())
+      else if(this.favorito.codProduto)
+        this.prodServ.favoritarProduto(this.favorito.codUsuario, this.favorito.codProduto, false).toPromise().then(a => this.exibeDados())
+      else if(this.favorito.codSegmento)
+        this.segServ.favoritarSegmento(this.favorito.codUsuario, this.favorito.codSegmento, false).toPromise().then(a => this.exibeDados())
+      else if(this.favorito.codVendedor)
+        this.vendServ.favoritarVendedor(this.favorito.codUsuario, this.favorito.codVendedor, false).toPromise().then(a => this.exibeDados())
+    })
   }
 
   constructor(private fav: FavoritosService,
@@ -68,18 +84,15 @@ export class Tab1Page {
       this.segServ.getSegmentos().toPromise(),
       this.catServ.getCategorias().toPromise(),
       this.prodServ.getProdutos().toPromise(),
-      this.favServ.getFavoritosUsuario(9).toPromise(),
       this.vendServ.getLojistas().toPromise()
     ]).then((data) => {
       this.segmentos = data[0]
       this.categorias = data[1]
       this.produtos = data[2]
-      this.favoritos = data[3]
-      this.vendedores = data[4]
+      this.vendedores = data[3]
       this.exibeDados()
       this.load.dismiss()
     })
-    
-  }
 
+  }
 }

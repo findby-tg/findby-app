@@ -7,21 +7,21 @@
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-item *ngIf="!isLogin && !isRegister" lines="none" style="margin-top: 10%; height: 70px;">
-    <span style="margin: 0 auto; font-size: 30pt; font-weight: 700; height: 50px;">FindBy</span>
+  <ion-item *ngIf="!isLogin && !isRegister" lines="none" style="margin-top: 15%; height: 100px;">
+    <ion-item style="margin: 0 auto;" lines="none">
+      <span style="font-size: 30pt; font-weight: 700; height: 50px;">FindBy</span>
+      <img src="../../assets/favicon2.svg" style="width: 100px; height: 100px; margin-left: 10px;">
+    </ion-item>
   </ion-item>
-  <ion-item *ngIf="!isLogin && !isRegister" lines="none">
-    <h5 style="margin:0 auto; color: #f5f5f5; font-size: 12pt;">Busque e localize o produto de sua necessidade</h5>
-  </ion-item>
-  <ion-item *ngIf="isRegister" style="margin: 50% auto 0 auto; width: 80%;"> 
+  <ion-item *ngIf="isRegister" style="margin: 40% auto 0 auto; width: 80%;"> 
     <ion-label position="floating" color="light">E-mail</ion-label>
-    <ion-input [(ngModel)]="usuario" color="light"></ion-input>
+    <ion-input [(ngModel)]="usuarioemail" color="light"></ion-input>
   </ion-item>
   <ion-item *ngIf="isRegister" style="margin: 0 auto; width: 80%;"> 
     <ion-label position="floating" color="light">Usuário</ion-label>
-    <ion-input [(ngModel)]="email" color="light"></ion-input>
+    <ion-input [(ngModel)]="usuario" color="light"></ion-input>
   </ion-item>
-  <ion-item *ngIf="isLogin" style="margin: 50% auto 0 auto; width: 80%;"> 
+  <ion-item *ngIf="isLogin" style="margin: 40% auto 0 auto; width: 80%;"> 
     <ion-label position="floating" color="light">E-mail / Usuário</ion-label>
     <ion-input [(ngModel)]="usuario" color="light"></ion-input>
   </ion-item>
@@ -29,8 +29,11 @@
     <ion-label position="floating" color="light">Senha</ion-label>
     <ion-input [(ngModel)]="senha" type="password" color="light"></ion-input>
   </ion-item>
+  <ion-item *ngIf="isLogin" lines="none" style="margin: 0 auto;width: 85%">
+    <ion-button fill="clear" style="right: 0; font-weight: 700;" color="light" slot="end">Esqueceu a sua senha?</ion-button>
+  </ion-item>
   <ion-button *ngIf="isLogin" (click)="executeLogin()" class="regis" color="tertiary" expand="block">Entrar</ion-button>
   <ion-button *ngIf="!isLogin && !isRegister" (click)="habilitaLogin()" id="log" color="tertiary" expand="block">Entrar</ion-button>
   <ion-button *ngIf="!isLogin && !isRegister" (click)="habilitaRegister()" id="regis" class="regis" color="light" expand="block">Registrar-se</ion-button>
-  <ion-button *ngIf="isRegister" id="regis" class="regis" color="light" expand="block">Registrar-se</ion-button>
+  <ion-button *ngIf="isRegister" id="regis" (click)="executaRegistro()" class="regis" color="light" expand="block">Registrar-se</ion-button>
 </ion-content>

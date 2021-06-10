@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { IonSelect, ModalController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Endereco } from '../interface/endereco';
+import { Segmento } from '../interface/segmento';
 import { Vendedor } from '../interface/vendedor';
 import { ModalPesquisaPage } from '../modal-pesquisa/modal-pesquisa.page';
 import { EnderecoService } from '../services/endereco.service';
+import { SegmentosService } from '../services/segmentos.service';
 import { UsuariosService } from '../services/usuarios.service';
 import { VendedoresService } from '../services/vendedores.service';
 
@@ -21,20 +23,24 @@ export class Tab2Page {
   platform:any;
   hereMapApiKey:string="MDEyV46RCZ67_RQAfkyHDaAuDdEaeE5YSwS3pQmKHXc";
   vendedores: Vendedor[];
+  segmentos: Segmento[];
   enderecos:Endereco[] = [];
   endSelecionado:string = "";
   temEndereco:boolean = false;
   
-  constructor(public modalController: ModalController, private vendService: VendedoresService, private endService: EnderecoService, private router: Router, private storage: Storage, private userService: UsuariosService) {
+  constructor(public modalController: ModalController, private vendService: VendedoresService, private endService: EnderecoService, private router: Router, private storage: Storage, private userService: UsuariosService, private segService: SegmentosService) {
     Promise.all([
       this.endService.getEnderecos().toPromise(),
-      this.vendService.getLojistas().toPromise()
+      this.vendService.getLojistas().toPromise(),
+      this.segService.getSegmentos().toPromise()
     ]).then((data) => {
       this.vendedores = data[1]
+      this.segmentos = data[2]
       this.storage.get("usrLogado").then((dado) => {
         this.enderecos = dado.enderecos
-        this.endSelecionado = this.enderecos[0].logradouro
         this.temEndereco = this.enderecos.length > 0
+        if(this.temEndereco)
+          this.endSelecionado = this.enderecos[0].logradouro
 
         this.carregaMapa()
       })
@@ -92,6 +98,8 @@ export class Tab2Page {
     }, false);
     
     this.vendedores.forEach((vend) => {
+      
+      var segm = this.segmentos.find(s => s.codSegmento == vend.codSegmento).nomeSegmento
       if(vend.enderecos.length)
         this.addMarkerToGroup(group,
                         { lat: vend.enderecos[0].latitude, lng: vend.enderecos[0].longitude },
@@ -99,7 +107,7 @@ export class Tab2Page {
                           <input type="hidden" id="idVend" value="${vend.codUsuario}">
                           <ion-button class="ion-text-wrap" style="height: 70px; width:200px" expand="block" color="tertiary" id="vendedorBtn">${vend.nome}</ion-button>
                         </div>
-                        <div>${vend.segmento.nomeSegmento}</div>`
+                        <div>${segm}</div>`
                         )
     })      
   }

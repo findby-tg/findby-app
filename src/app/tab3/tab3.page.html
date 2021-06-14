@@ -19,33 +19,16 @@
         <h2>Endereços</h2>
         <div>
           <ion-item>
-            <ion-button style="margin: 0 auto;" color="tertiary" fill="clear">Adicionar Endereço</ion-button>
+            <ion-button (click)="modalEndereco('Adicionar')" style="margin: 0 auto;" color="tertiary" fill="clear">Adicionar Endereço</ion-button>
           </ion-item>
-          <ion-radio-group value="griff">       
-            <ion-item class="ion-no-padding">
-              <ion-item class="ion-no-padding" style="width: 90%;">
-                <ion-label>Rua Benedito Galdino de Barros</ion-label>
-                <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="biff" mode="ios"></ion-radio>
+          <ion-radio-group value="rdbEndereco">   
+            <ion-item class="ion-no-padding" *ngFor="let end of enderecos">
+              <ion-item class="ion-no-padding" style="width: 90%;" lines="none">
+                <ion-label style="font-size: 3.7vw">{{end.logradouro}}</ion-label>
+                <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="{{end.codEndereco}}" mode="ios"></ion-radio>
               </ion-item>
-              <ion-icon color="tertiary" style="width: 8%;" name="create"></ion-icon>
+              <ion-icon (click)="modalEndereco('Editar',end)" color="tertiary" style="width: 8%;" name="create"></ion-icon>
             </ion-item>
-        
-            <ion-item class="ion-no-padding">
-              <ion-item class="ion-no-padding" style="width: 90%;">
-                <ion-label>Rua Xavier de Toledo</ion-label>
-                <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="griff" mode="ios"></ion-radio>
-              </ion-item>
-              <ion-icon color="tertiary" style="width: 8%;" name="create"></ion-icon>
-            </ion-item>
-        
-            <ion-item class="ion-no-padding">
-              <ion-item class="ion-no-padding" style="width: 90%;">
-                <ion-label>Rua Alvarenga Peixoto</ion-label>
-                <ion-radio style="margin: 0 15px;" slot="start" color="tertiary" value="buford" mode="ios"></ion-radio>
-              </ion-item>
-              <ion-icon color="tertiary" style="width: 8%;" name="create"></ion-icon>
-            </ion-item>
-
           </ion-radio-group>
         </div>
       </li>
@@ -72,13 +55,13 @@
         </ion-row>
       </ion-grid>
     </ion-item>
-    <ion-item style="padding: 10px 30px;">
+    <ion-item style="padding: 0 30px; padding-top: 30px;" lines="none">
       <ion-label class="fontColor">E-mail: </ion-label>
       <ion-input id="emailUser" placeholder="teste@email.com.br" value="{{usuarioLogado.email}}" readonly="{{editaEmail}}"></ion-input>
       <ion-icon color="tertiary" *ngIf="editaEmail" (click)="trocarEmail()" name="create"></ion-icon>
       <ion-icon color="tertiary" *ngIf="!editaEmail" (click)="efetivaEmail()" name="save"></ion-icon>
     </ion-item>
-    <ion-item style="padding: 10px 30px;">
+    <ion-item style="padding: 20px 30px;" lines="none">
       <ion-label class="fontColor">Celular: </ion-label>
       <ion-input id="celularUser" placeholder="(11) 11111-1111" value="{{usuarioLogado.numDddCelular}}{{usuarioLogado.telefoneCelular}}" readonly="{{editaCelular}}"></ion-input>
       <ion-icon color="tertiary" *ngIf="editaCelular" (click)="trocarCelular()" name="create"></ion-icon>

@@ -3,15 +3,15 @@
     <ion-row style="padding: 5px 0;">
       <ion-col size="2.0" style="padding: 0">
           <ion-button (click)="voltaVitrine()" fill="clear" expand="full" size="small" style="padding: 0; height: 80%;">
-            <ion-icon color="light" slot="icon-only" name="arrow-back-outline"></ion-icon>
+            <ion-icon color="dark" slot="icon-only" name="arrow-back-outline"></ion-icon>
           </ion-button>
       </ion-col>
       <ion-col size="8.0" style="padding: 0;">
         <ion-title class="ion-text-center" style="height: 100%;text-transform: uppercase; font-size: 3.1vw; font-weight: 700; padding:0">{{vend.nome}}</ion-title>
       </ion-col>
       <ion-col size="2.0" style="padding:0">
-        <ion-button fill="clear" expand="full" size="small" style="padding:0; height: 80%;">
-          <ion-icon color="warning" slot="icon-only" name="star-outline"></ion-icon>
+        <ion-button (click)="favoritaVendedor()" fill="clear" expand="full" size="small" style="padding:0; height: 80%;">
+          <ion-icon color="warning" slot="icon-only" [name]="isVendFavorito ? 'star' : 'star-outline'"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
@@ -21,9 +21,9 @@
 <ion-content>
   <img style="margin-top: 25px;height: 30%; width: 50%; margin-left: auto; margin-right: auto; display: block; border-radius: 50%;" src="{{image}}">
   <ion-item lines="none" style="margin-top: 20px;">
-    <ion-button fill="clear">
-      <ion-label style="font-weight: 700" color="dark">Mercearia</ion-label>
-      <ion-icon style="margin-left: 10px; height: 100%;" color="warning" slot="end" name="star-outline"></ion-icon>
+    <ion-button (click)="favoritaSegmento()" fill="clear">
+      <ion-label style="font-weight: 700; font-size: 3.2vw" color="dark">{{nomeSegmento}}</ion-label>
+      <ion-icon style="margin-left: 10px; height: 100%;" color="warning" slot="end" [name]="isSegFavorito ? 'star' : 'star-outline'"></ion-icon>
     </ion-button>
   </ion-item>
   <ion-list style="margin-top: 20px;">

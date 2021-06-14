@@ -6,30 +6,15 @@ import { Estado } from '../interface/estado';
   providedIn: 'root'
 })
 export class EstadosService {
-  url = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+  url = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome'
 
   constructor(private http: HttpClient) { }
 
-  getEstados(): Estado[] {
-    var aEst: Estado[];
-
-    this.http.get(this.url).subscribe(
-      (obj:Estado[]) => aEst
-    )
-
-    return aEst;
+  getEstados() {
+    return this.http.get<Estado[]>(this.url);
   }
 
-  getEstadoById(id:number): Estado {
-    var est:Estado;
-    
-    this.http.get(this.url).subscribe(
-      (obj:Estado) => est = {
-        id: obj.id,
-        nome: obj.nome
-      }
-    )
-
-    return est
+  getEstadoById(id:number) {
+    return this.http.get<Estado>(this.url + `/${id}`);
   }
 }

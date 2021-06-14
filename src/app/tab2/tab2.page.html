@@ -5,7 +5,7 @@
   
   <ion-fab horizontal="start" vertical="top" slot="fixed">
 
-    <ion-fab-button *ngIf="temEndereco" style="margin-left: 5px; margin-top: 15px; width: 250px; --border-radius: 21px;" color="light">
+    <ion-fab-button *ngIf="temEndereco && !isUsaLoc" style="margin-left: 5px; margin-top: 15px; width: 250px; --border-radius: 21px;" color="light">
       <ion-item lines="none" style="width: 200px; --background: transparent">
         <ion-label>{{endSelecionado}}</ion-label>
       </ion-item>
@@ -18,6 +18,12 @@
         </ion-item>
       </ion-fab-button>
     </ion-fab-list>
+  </ion-fab>
+
+  <ion-fab horizontal="start" vertical="top" slot="fixed">
+    <ion-button fill="clear" *ngIf="isUsaLoc" style="margin-left: 5px; margin-top: 15px;" color="dark">
+      <ion-icon name="location" size="large"></ion-icon>
+    </ion-button>
   </ion-fab>
 
   <ion-grid style="width:100%;height: 100%; padding: 0">

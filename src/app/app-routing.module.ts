@@ -28,6 +28,10 @@ const routes: Routes = [
   {
     path: 'notificacao',
     loadChildren: () => import('./notificacao/notificacao.module').then( m => m.NotificacaoPageModule)
+  },
+  {
+    path: 'modal-endereco',
+    loadChildren: () => import('./modal-endereco/modal-endereco.module').then( m => m.ModalEnderecoPageModule)
   }
 
 

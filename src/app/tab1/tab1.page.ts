@@ -95,4 +95,8 @@ export class Tab1Page {
     })
 
   }
+
+  ionViewDidEnter() {
+    this.exibeDados()
+  }
 }

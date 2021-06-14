@@ -21,6 +21,7 @@ export class Tab2Page {
   map:any;
   ui:any;
   platform:any;
+  isUsaLoc:boolean
   hereMapApiKey:string="MDEyV46RCZ67_RQAfkyHDaAuDdEaeE5YSwS3pQmKHXc";
   vendedores: Vendedor[];
   segmentos: Segmento[];
@@ -37,12 +38,15 @@ export class Tab2Page {
       this.vendedores = data[1]
       this.segmentos = data[2]
       this.storage.get("usrLogado").then((dado) => {
-        this.enderecos = dado.enderecos
-        this.temEndereco = this.enderecos.length > 0
-        if(this.temEndereco)
-          this.endSelecionado = this.enderecos[0].logradouro
-
-        this.carregaMapa()
+        this.isUsaLoc = dado.indUsaLatLong == "S" ? true : false
+        endService.getEnderecoLojistaById(9).toPromise().then((e) => {
+          this.enderecos = e
+          this.temEndereco = this.enderecos.length > 0
+          if(this.temEndereco)
+            this.endSelecionado = this.enderecos[0].logradouro
+  
+          this.carregaMapa()
+        })
       })
     })
   }
@@ -146,9 +150,10 @@ export class Tab2Page {
   }
 
   ionViewDidEnter() {
-    if(this.map)
+    if(this.map) {
+      //this.carregaMapa()
       this.refreshMapa()
-    else
+    } else
       setTimeout(() =>{
         this.ionViewDidEnter()
       }, 1000)

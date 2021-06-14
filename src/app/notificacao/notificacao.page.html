@@ -7,7 +7,7 @@
 <ion-content>
   <ion-list style="margin-top: 5px;">
     <ion-item-sliding lines="none">
-      <ion-item lines="none" #ionItem id="item1" style="padding:0 ;margin-top: 15px;">
+      <ion-item (click)="acessaVitrine(1)" lines="none" #ionItem id="item1" style="padding:0 ;margin-top: 15px;">
         <ion-icon style="margin-left: 5px; margin-right: 15px; font-size: 30px; color: #57758d;" name="document-text"></ion-icon>
         <ion-label>
           <h2>Mercearia Warus</h2>
@@ -19,7 +19,7 @@
     </ion-item-sliding>
 
     <ion-item-sliding lines="none">
-      <ion-item lines="none" #ionItem id="item2" style="margin-top: 15px;">
+      <ion-item (click)="acessaVitrine(3)" lines="none" #ionItem id="item2" style="margin-top: 15px;">
         <ion-icon style="margin-left: 5px; margin-right: 15px; font-size: 30px; color: #57758d;" name="document-text"></ion-icon>
         <ion-label>
           <h2>Padaria Pãodemais</h2>

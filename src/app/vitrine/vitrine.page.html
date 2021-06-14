@@ -11,7 +11,7 @@
         </ion-col>
         <ion-col size="10.5" (click)="exibirLojistaDetalhado()">
           <ion-title style="font-size: 4.5vw; font-weight: 700; margin-top: 2%">{{vendedor.nome}}</ion-title>
-          <ion-title style="color: #b6b4b4; font-size: 3.5vw; padding-top: 5px;">{{buscarSegmento(vendedor.codSegmento)}} - 10km</ion-title>
+          <ion-title style="color: #b6b4b4; font-size: 3.5vw; padding-top: 5px;">{{buscarSegmento(vendedor.codSegmento)}}</ion-title>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -33,7 +33,7 @@
         <ion-col size="4" *ngFor="let produto of cat.value.produtos">
           <ion-card>
             <div (click)="exibirProdutoDetalhado(produto.codProduto)">
-              <img src="{{image}}">
+              <img src="{{produto.img}}">
               <ion-card-header style="padding: 0; height: 60px">
                 <ion-item lines="none">
                   <p class="ion-text-wrap" style="max-height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; color:#5f5f5f">{{produto.nomeProduto}}</p>
@@ -41,7 +41,7 @@
             </ion-card-header>
             </div>
             <ion-card-content style="padding: 0;">
-              <ion-button fill="clear" expand="full" vertical="end">
+              <ion-button (click)="favoritarProduto(cat.key, produto.codProduto, !produto.favorito)" fill="clear" expand="full" vertical="end">
                 <ion-icon color="warning" slot="icon-only" [name]="produto.favorito? 'star' : 'star-outline'"></ion-icon>
               </ion-button>
             </ion-card-content>

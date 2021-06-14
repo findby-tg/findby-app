@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notificacao',
@@ -7,13 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificacaoPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
   swipedNotification(id){
     document.getElementById(id).remove()
+  }
+
+  acessaVitrine(id) {
+    this.router.navigate([`tabs/vitrine/${id}`])
   }
 
 }

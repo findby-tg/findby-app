@@ -4,6 +4,8 @@ import { Usuario } from '../interface/usuario';
 import { Storage } from '@ionic/storage-angular';
 import { Endereco } from '../interface/endereco';
 import { EnderecoService } from '../services/endereco.service';
+import { ModalController } from '@ionic/angular';
+import { ModalEnderecoPage } from '../modal-endereco/modal-endereco.page';
 
 @Component({
   selector: 'app-tab3',
@@ -58,15 +60,38 @@ export class Tab3Page {
     this.editaCelular = true;
   }
 
-  constructor(private router: Router, private storage: Storage, private endService: EnderecoService) {
-    this.storage.get("usrLogado").then((data) => {
-      this.usuarioLogado = data
+  async modalEndereco(nome:string, end:Endereco) {
+    console.log(end)
+    const modal = await this.modalController.create({
+      component: ModalEnderecoPage,
+      componentProps: end ? {
+        'modo': nome,
+        'uf': end.uf,
+        'cep': end.cep,
+        'logradouro': end.logradouro,
+        'numero': end.numero,
+        'bairro': end.bairro,
+        'raio': end.raio,
+        'municipio': end.cidade
+      } : {
+        'modo': nome,
+        'raio': 10
+      }
+    });
+    await modal.present();
+  }
+
+  constructor(private router: Router, private storage: Storage, private endService: EnderecoService, private modalController: ModalController) {
+    this.storage.get("usrLogado").then((usr) => {
+      this.usuarioLogado = usr
       this.isUsaLoc = this.usuarioLogado.indUsaLatLong == "S"
       this.distancia = this.usuarioLogado.raio
 
       Promise.all([
-        this.endService.getEnderecos()
-      ])
+        this.endService.getEnderecoLojistaById(this.usuarioLogado.codUsuario).toPromise()
+      ]).then((data) => {
+        this.enderecos = data[0]
+      })
     })
   }
 }

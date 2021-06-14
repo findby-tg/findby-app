@@ -90,7 +90,9 @@ export class VitrinePage implements OnInit {
             nomeProduto: prod.nomeProduto,
             descricao: prod.descricao,
             preco: prod.preco,
-            marca: prod.marca
+            marca: prod.marca,
+            favorito: fav.find(f => f.codProduto == prod.codProduto) ? true : false,
+            img: prod.imgProd
           }
         )
       })
@@ -99,8 +101,15 @@ export class VitrinePage implements OnInit {
 
   favoritarCategoria(codCategoria:number, adiciona:boolean) {
     this.catService.favoritarCategoria(9,codCategoria, adiciona).toPromise().then( a =>
-      this.categorizaProdutos()
+      this.prodCategorizado[codCategoria].isFavorito = adiciona
     )
+  }
+
+  favoritarProduto(codCategoria:number, codProduto:number, adiciona:boolean) {
+    console.log(codCategoria, codProduto, adiciona)
+    this.prodService.favoritarProduto(9, codProduto, adiciona).toPromise().then( (a) => {
+      this.prodCategorizado[codCategoria].produtos[this.prodCategorizado[codCategoria].produtos.findIndex(p => p.codProduto == codProduto)].favorito = adiciona
+    })
   }
 
   constructor(private route: ActivatedRoute, private loading: LoadingController, private prodService: ProdutosService, private vendService: VendedoresService, private router: Router, private navCtrl: NavController, private usrService: UsuariosService, private catService: CategoriasService, private segService: SegmentosService, private favService: FavoritosService) { 

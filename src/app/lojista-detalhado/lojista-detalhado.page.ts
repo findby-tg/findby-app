@@ -6,6 +6,9 @@ import { Endereco } from '../interface/endereco';
 import { Vendedor } from '../interface/vendedor';
 import { ContatosService } from '../services/contatos.service';
 import { EnderecoService } from '../services/endereco.service';
+import { FavoritosService } from '../services/favoritos.service';
+import { SegmentosService } from '../services/segmentos.service';
+import { VendedoresService } from '../services/vendedores.service';
 
 declare var H;
 @Component({
@@ -17,6 +20,9 @@ export class LojistaDetalhadoPage implements OnInit {
 
   vend:Vendedor;
   contatos:Contato[];
+  nomeSegmento:string;
+  isSegFavorito:boolean;
+  isVendFavorito:boolean;
   endereco:Endereco = { codEndereco: null, codUsuario: null, logradouro: "", numero: null, bairro: "", cep: null, cidade: null, uf: null, pais: null, latitude: null, longitude: null, raio: null, indEnderecoSelec: null };
   load: any;
   //image:string = "https://greenvolt.com.br/wp-content/uploads/2018/05/ef3-placeholder-image.jpg";
@@ -38,18 +44,34 @@ export class LojistaDetalhadoPage implements OnInit {
     this.navCtrl.back();
   }
 
-  constructor(private route: ActivatedRoute, private loading: LoadingController, private navCtrl: NavController, private contService: ContatosService, private endService: EnderecoService) {
+  favoritaSegmento() {
+    this.segService.favoritarSegmento(9, this.vend.codSegmento, !this.isSegFavorito).toPromise().then((a) => {
+      this.isSegFavorito = !this.isSegFavorito
+    })
+  }
+
+  favoritaVendedor() {
+    this.vendService.favoritarVendedor(9, this.vend.codUsuario, !this.isVendFavorito).toPromise().then((a) => {
+      this.isVendFavorito = !this.isVendFavorito
+    })
+  }
+
+  constructor(private route: ActivatedRoute, private loading: LoadingController, private navCtrl: NavController, private contService: ContatosService, private endService: EnderecoService, private segService: SegmentosService, private favService: FavoritosService, private vendService: VendedoresService) {
     this.presentLoad();
     this.route.queryParams.subscribe(params => {
       this.vend = JSON.parse(params['vendedor'])
 
       Promise.all([
         this.contService.getContatosVend(this.vend.codUsuario).toPromise(),
-        this.endService.getEnderecos().toPromise()
+        this.endService.getEnderecos().toPromise(),
+        this.segService.getSegmentos().toPromise(),
+        this.favService.getFavoritosUsuario(9).toPromise()
       ]).then((data) => {
         this.contatos = data[0];
         this.endereco = data[1].find(e =>  e.codUsuario == this.vend.codUsuario );
-        console.log(this.endereco)
+        this.nomeSegmento = data[2].find(s => s.codSegmento == this.vend.codSegmento).nomeSegmento
+        this.isSegFavorito = data[3].find(f => f.codSegmento == this.vend.codSegmento) ? true : false
+        this.isVendFavorito = data[3].find(f => f.codVendedor == this.vend.codUsuario) ? true : false
         this.load.dismiss()
       })
     })

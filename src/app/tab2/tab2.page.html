@@ -21,7 +21,7 @@
   </ion-fab>
 
   <ion-fab horizontal="start" vertical="top" slot="fixed">
-    <ion-button fill="clear" *ngIf="isUsaLoc" style="margin-left: 5px; margin-top: 15px;" color="dark">
+    <ion-button (click)="centralizaMapaLoc()" fill="clear" *ngIf="isUsaLoc" style="margin-left: 5px; margin-top: 15px;" color="dark">
       <ion-icon name="location" size="large"></ion-icon>
     </ion-button>
   </ion-fab>

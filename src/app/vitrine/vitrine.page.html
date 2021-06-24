@@ -33,7 +33,7 @@
         <ion-col size="4" *ngFor="let produto of cat.value.produtos">
           <ion-card>
             <div (click)="exibirProdutoDetalhado(produto.codProduto)">
-              <img src="{{produto.img}}">
+              <img src="{{produto.img}}" style="height: 80px; width: 100%;">
               <ion-card-header style="padding: 0; height: 60px">
                 <ion-item lines="none">
                   <p class="ion-text-wrap" style="max-height: 50px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; color:#5f5f5f">{{produto.nomeProduto}}</p>

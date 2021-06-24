@@ -8,9 +8,9 @@
   <ion-list style="margin-top: 5px;" lines="full">
     <ion-item style="margin-bottom: 5px" lines="none" *ngFor="let fav of itensFav">
       <ion-avatar slot="start">
-        <img src="{{image}}">
+        <img src="{{fav.img}}">
       </ion-avatar>
-      <ion-label>
+      <ion-label (click)="redirecionaItem(fav.codDestino, fav.itemDesc)">
         <h2 style="margin-bottom: 0;">{{fav.nome}}</h2>
         <p style="font-size: 11px;">{{fav.itemDesc}}</p>
       </ion-label>

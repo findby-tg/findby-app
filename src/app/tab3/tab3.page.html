@@ -10,7 +10,7 @@
   <ion-list>
     <ion-item style="width: 90%; margin: 0 auto">
       <p style="margin: 0; font-size: 14px;">Deseja utilizar sua localização?</p>
-      <ion-toggle [(ngModel)]="isUsaLoc" color="tertiary"></ion-toggle>
+      <ion-toggle [(ngModel)]="isUsaLoc" (click)="atualizaLoc()" color="tertiary"></ion-toggle>
     </ion-item>
     <ul color="tertiary" *ngIf="!isUsaLoc" style="margin-top: 5px; margin-bottom: 70px">
       <li>

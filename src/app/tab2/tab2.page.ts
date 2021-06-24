@@ -51,6 +51,10 @@ export class Tab2Page {
     })
   }
 
+  centralizaMapaLoc() {
+    this.map.setCenter({ lat: -23.4817086	, lng:  -47.4640104	},true)
+  }
+
   async modalPesquisa() {
     const modal = await this.modalController.create(
       {
@@ -151,8 +155,10 @@ export class Tab2Page {
 
   ionViewDidEnter() {
     if(this.map) {
-      //this.carregaMapa()
-      this.refreshMapa()
+      this.storage.get("usrLogado").then((dado) => {
+        this.isUsaLoc = dado.indUsaLatLong == "S" ? true : false
+        this.refreshMapa()
+      })
     } else
       setTimeout(() =>{
         this.ionViewDidEnter()

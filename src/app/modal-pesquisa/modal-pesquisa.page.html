@@ -26,7 +26,7 @@
   <ion-list>
     <ion-item style="margin-top: 15px;" lines="none" (click)="abreVitrine(vendedor)" no-lines *ngFor="let vendedor of vendedoresPesq">
       <ion-avatar slot="start">
-        <img src="{{image}}">
+        <img src="{{vendedor.imgUser}}">
       </ion-avatar>
       <ion-label>
         <h5>{{vendedor.nome}}</h5>

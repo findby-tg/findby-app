@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { Categoria } from '../interface/categoria';
 import { Favorito } from '../interface/favoritos';
@@ -18,7 +19,7 @@ import { VendedoresService } from '../services/vendedores.service';
 })
 export class Tab1Page {
 
-  itensFav:Array<{codItem:number, itemDesc:string, nome:string}> = [];
+  itensFav:Array<{codItem:number, codDestino:number, itemDesc:string, nome:string, img:string}> = [];
   favorito: Favorito;
   favoritos: Favorito[];
   segmentos: Segmento[];
@@ -37,6 +38,11 @@ export class Tab1Page {
     await this.load.present();
   }
 
+  redirecionaItem(codItem, itemDesc) {
+    if(itemDesc == "Vendedor")
+      this.router.navigate([`tabs/vitrine/${codItem}`])
+  }
+
   exibeDados() {
     this.itensFav = []
     this.favServ.getFavoritosUsuario(9).toPromise().then( fav =>
@@ -44,12 +50,22 @@ export class Tab1Page {
         this.itensFav.push(
           {
             codItem: b.codFavorito,
+            codDestino: b.codProduto   ? this.produtos.find(p => p.codProduto == b.codProduto).codProduto : 
+                        b.codCategoria ? this.categorias.find(c => c.codCategoria == b.codCategoria).codCategoria :
+                        b.codSegmento  ? this.segmentos.find(s => s.codSegmento == b.codSegmento).codSegmento :
+                        b.codVendedor  ? this.vendedores.find(v => v.codUsuario == b.codVendedor).codUsuario : 
+                        null,
             itemDesc: b.codProduto ? "Produto" : b.codCategoria ? "Categoria" : b.codSegmento ? "Segmento" : b.codVendedor ? "Vendedor" : "Desconhecido",
             nome: b.codProduto   ? this.produtos.find(p => p.codProduto == b.codProduto).nomeProduto : 
                   b.codCategoria ? this.categorias.find(c => c.codCategoria == b.codCategoria).nomeCategoria :
                   b.codSegmento  ? this.segmentos.find(s => s.codSegmento == b.codSegmento).nomeSegmento :
                   b.codVendedor  ? this.vendedores.find(v => v.codUsuario == b.codVendedor).nome : 
-                  ""
+                  "",
+            img: b.codProduto   ? this.produtos.find(p => p.codProduto == b.codProduto).imgProd : 
+                 b.codCategoria ? 'https://greenvolt.com.br/wp-content/uploads/2018/05/ef3-placeholder-image.jpg' :
+                 b.codSegmento  ? 'https://greenvolt.com.br/wp-content/uploads/2018/05/ef3-placeholder-image.jpg' :
+                 b.codVendedor  ? this.vendedores.find(v => v.codUsuario == b.codVendedor).imgUser : 
+                 ""
         })
       )
     ) 
@@ -77,7 +93,8 @@ export class Tab1Page {
               private segServ: SegmentosService,
               private vendServ: VendedoresService,
               private favServ: FavoritosService,
-              private loading: LoadingController) {
+              private loading: LoadingController,
+              private router: Router) {
 
     this.presentLoad()
     Promise.all([

@@ -23,6 +23,11 @@ export class Tab3Page {
   editaCelular:boolean = true;
   enderecos:Endereco[];
 
+  atualizaLoc() {
+    this.usuarioLogado.indUsaLatLong = !this.isUsaLoc ? "S" : "N"
+    this.storage.set('usrLogado',this.usuarioLogado)
+  }
+
   executeLogoff() {
     this.router.navigate([''])
   }
